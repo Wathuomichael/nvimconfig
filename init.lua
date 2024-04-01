@@ -422,6 +422,18 @@ require'nvim-web-devicons'.setup {
  };
 }
 
+-- Move current line down in normal mode
+vim.keymap.set('n', '<S-Up>', ':<C-u>move-2<CR>', {noremap = true, silent = true})
+
+-- Move current line up in normal mode
+vim.keymap.set('n', '<S-Down>', ':<C-u>move+1<CR>', {noremap = true, silent = true})
+
+-- Move selected lines down in visual mode
+vim.keymap.set('v', '<S-Up>', ':move \'<-2<CR>gv=gv', {noremap = true, silent = true})
+
+-- Move selected lines up in visual mode
+vim.keymap.set('v', '<S-Down>', ':move \'>+1<CR>gv=gv', {noremap = true, silent = true})
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
