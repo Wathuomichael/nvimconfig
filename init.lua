@@ -276,8 +276,21 @@ require('lazy').setup({
 
   {
     'nvim-tree/nvim-web-devicons' 
-  }
+  },
   
+  {
+    "antosha417/nvim-lsp-file-operations",
+
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-tree.lua",
+    },
+
+    config = function()
+      require("lsp-file-operations").setup()
+    end,
+  },
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -433,6 +446,10 @@ vim.keymap.set('v', '<S-Up>', ':move \'<-2<CR>gv=gv', {noremap = true, silent = 
 
 -- Move selected lines up in visual mode
 vim.keymap.set('v', '<S-Down>', ':move \'>+1<CR>gv=gv', {noremap = true, silent = true})
+
+--Linter popup
+vim.keymap.set('n', '<leader>l', ':lua vim.diagnostic.open_float()<CR>')
+
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
