@@ -264,7 +264,7 @@ require('lazy').setup({
   },
 
   {
-    'nvim-tree/nvim-web-devicons' 
+    'nvim-tree/nvim-web-devicons'
   },
   
   {
@@ -747,7 +747,20 @@ require('which-key').register({
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
 require('mason').setup()
-require('mason-lspconfig').setup()
+require('mason-lspconfig').setup({
+  ensure_installed = {'eslint'}
+})
+
+local lspconfig = require('lspconfig')
+lspconfig.eslint.setup({
+  -- Specify ESLint configurations
+  on_attach = function(client, bufnr)
+    -- Set up buffer key mappings, autocommands, etc.
+  end,
+  settings = {
+    -- ESLint specific settings
+  },
+})
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
