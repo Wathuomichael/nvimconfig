@@ -266,6 +266,10 @@ require('lazy').setup({
   {
     'nvim-tree/nvim-web-devicons'
   },
+
+  {
+    'mg979/vim-visual-multi'
+  },
   
   {
     "antosha417/nvim-lsp-file-operations",
@@ -423,6 +427,13 @@ require'nvim-web-devicons'.setup {
   },
  };
 }
+
+--vim-visual-multi(multi-cursor)
+require('lazy').setup({
+    -- other plugins
+    'mg979/vim-visual-multi',
+})
+
 
 -- Move current line down in normal mode
 vim.keymap.set('n', '<S-Up>', ':<C-u>move-2<CR>', {noremap = true, silent = true})
