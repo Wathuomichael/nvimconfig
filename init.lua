@@ -268,7 +268,7 @@ require('lazy').setup({
   },
 
   {
-    'mg979/vim-visual-multi'
+    'mg979/vim-visual-multi'  
   },
   
   {
@@ -326,6 +326,9 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
 
 --Harpoon
 local harpoon = require("harpoon")
