@@ -217,7 +217,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  { 'numToStr/Comment.nvim', opts = {} }, 
 
   -- Fuzzy Finder (files, lsp, etc)
   {
@@ -268,15 +268,19 @@ require('lazy').setup({
   },
 
   {
-    'mg979/vim-visual-multi'  
+    'mg979/vim-visual-multi'
   },
-  
+
+  {
+    'echasnovski/mini.icons'
+  },
+
   {
     "antosha417/nvim-lsp-file-operations",
 
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-tree.lua",
+      'kyazdani42/nvim-tree.lua'
     },
 
     config = function()
@@ -378,6 +382,7 @@ require("nvim-tree").setup({
 vim.keymap.set('n', '<leader><Tab>', vim.cmd.NvimTreeToggle)
 
 --nvim-web-devicons
+require'nvim-web-devicons'.get_icons()
 require'nvim-web-devicons'.setup {
  -- your personnal icons can go here (to override)
  -- you can specify color or cterm_color instead of specifying both of them
@@ -437,6 +442,10 @@ require('lazy').setup({
     'mg979/vim-visual-multi',
 })
 
+require('which-key').setup {
+  show_help = false,  -- Disable help message on startup
+}
+
 
 -- Move current line down in normal mode
 vim.keymap.set('n', '<S-Up>', ':<C-u>move-2<CR>', {noremap = true, silent = true})
@@ -452,7 +461,6 @@ vim.keymap.set('v', '<S-Down>', ':move \'>+1<CR>gv=gv', {noremap = true, silent 
 
 --Linter popup
 vim.keymap.set('n', '<leader>l', ':lua vim.diagnostic.open_float()<CR>')
-
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -627,7 +635,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'css' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = true,
@@ -741,7 +749,7 @@ local on_attach = function(_, bufnr)
 end
 
 -- document existing key chains
-require('which-key').register {
+--[[ require('which-key').register {
   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
   ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
@@ -756,7 +764,7 @@ require('which-key').register {
 require('which-key').register({
   ['<leader>'] = { name = 'VISUAL <leader>' },
   ['<leader>h'] = { 'Git [H]unk' },
-}, { mode = 'v' })
+}, { mode = 'v' }) ]]
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
@@ -790,6 +798,9 @@ local servers = {
     pyright = {},
     rust_analyzer = {},
     tsserver = {},
+    cssls = {},
+    css_variables = {},
+    cssmodules_ls = {},
     html = { filetypes = { 'html', 'twig', 'hbs'} },
 
   lua_ls = {
@@ -816,16 +827,24 @@ mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
 
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    require('lspconfig')[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-      filetypes = (servers[server_name] or {}).filetypes,
+mason_lspconfig.setup_handlers({
+    function(server_name)
+        if server_name == "tsserver" then
+            server_name = "ts_ls"
+        end
+        local config = {
+            capabilities = capabilities,
+            on_attach = on_attach,
+            settings = servers[server_name],
+            filetypes = (servers[server_name] or {}).filetypes,
     }
-  end,
-}
+    if lspconfig[server_name] and lspconfig[server_name].setup then
+      lspconfig[server_name].setup(config)
+    else
+      print('LSP server for ' .. server_name .. ' does not have a setup function.')
+    end
+  end
+})
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
