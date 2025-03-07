@@ -1,2 +1,2 @@
-https://chatgpt.com/c/73f8c1a6-71ab-4c78-a50c-45eed0b7b407 - lazy install
+https://chatgpt.com/c/73f8c1a6-71ab-4c78-a50c-45eed0b7b407 - lazy install -install npm for mason
 https://chatgpt.com/c/f30cadea-d599-46d3-ac5e-7f119820fb47 - nvim webdevicons fix
